@@ -15,7 +15,7 @@ int unosStudenata(char * filename, Student * studenti, int br_stud);
 int pronadiMax(Student * studenti, int br_stud);
 int ispisStudenata(Student * studenti, int br_stud, int maxbodovi);
 
-int main()
+int main(void)
 {
 	int br_stud = 0, maxbodovi = 0;
 	char filename[] = "studenti.txt";
