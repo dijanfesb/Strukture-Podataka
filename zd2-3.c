@@ -19,11 +19,13 @@ int brisiElement(Student * HEAD, Student * element);
 int dodajElementIza(Student * element);
 int dodajElementIspred(Student * HEAD, Student * element);
 int spremiUDatoteku(Student * HEAD, char * filename);
+int ucitajIzDatoteke(Student * HEAD, char * filename);
 /* int sortirajPoPrezimenu(Student * HEAD);  TODO */
 
 int main(void)
 {
     Student * HEAD = (Student *)malloc(sizeof(Student));
+    HEAD->next = NULL;
     char prezime[STRMAX] = {0};
     int i = 0;
 
@@ -55,6 +57,9 @@ int main(void)
     ispis(HEAD);
 
     spremiUDatoteku(HEAD, "studenti1.txt");
+
+    ucitajIzDatoteke(HEAD, "studenti1.txt");
+    ispis(HEAD);
 
     return 0;
 }
@@ -172,11 +177,42 @@ int spremiUDatoteku(Student * HEAD, char * filename)
         return -1;
 
     while (P!=NULL) {
-        fprintf(fp, "Ime: %s, Prezime: %s, Godina rodenja: %d\n", P->ime, P->prezime, P->godinaRodenja);
+        fprintf(fp, "%s %s %d\n", P->ime, P->prezime, P->godinaRodenja);
         P=P->next;
     }
 
     fclose(fp);
     
+    return 0;
+}
+
+int ucitajIzDatoteke(Student * HEAD, char * filename)
+{
+    FILE * fp;
+    int brojStudenata = 0;
+    int i = 0;
+    Student * P = HEAD;
+    char buffer[STRMAX];
+
+    fp = fopen(filename, "r");
+
+    if (fp==NULL)
+        return -1;
+
+    while(fgets(buffer, STRMAX, fp))
+        brojStudenata++;
+
+    rewind(fp);
+
+    for (i=0; i<brojStudenata; i++) {
+        Student * noviElement = (Student *)malloc(sizeof(Student));
+        noviElement->next=NULL;
+        P->next=noviElement;
+        P=P->next;
+
+        fscanf(fp, "%s %s %d", noviElement->ime, noviElement->prezime, &(noviElement->godinaRodenja));
+    }
+
+    fclose(fp);
     return 0;
 }
