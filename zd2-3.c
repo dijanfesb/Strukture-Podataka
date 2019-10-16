@@ -20,7 +20,7 @@ int dodajElementIza(Student * element);
 int dodajElementIspred(Student * HEAD, Student * element);
 int spremiUDatoteku(Student * HEAD, char * filename);
 int ucitajIzDatoteke(Student * HEAD, char * filename);
-/* int sortirajPoPrezimenu(Student * HEAD);  TODO */
+int sortirajPoPrezimenu(Student * HEAD);
 
 int main(void)
 {
@@ -58,7 +58,10 @@ int main(void)
 
     spremiUDatoteku(HEAD, "studenti1.txt");
 
-    ucitajIzDatoteke(HEAD, "studenti1.txt");
+    // ucitajIzDatoteke(HEAD, "studenti1.txt");
+
+    sortirajPoPrezimenu(HEAD);
+    printf("\n\nSortirani ispis: ");
     ispis(HEAD);
 
     return 0;
@@ -214,5 +217,36 @@ int ucitajIzDatoteke(Student * HEAD, char * filename)
     }
 
     fclose(fp);
+    return 0;
+}
+
+int sortirajPoPrezimenu(Student * HEAD)
+{
+    int isChanged = 1;
+
+    do {
+        Student * prethodni = HEAD;
+        Student * P = HEAD->next;
+        Student * sljedeci = P->next;
+
+        isChanged = 0;
+
+        while(P!=NULL) {
+            if(strcmp(P->prezime, sljedeci->prezime)>0) {
+                Student * temp = sljedeci->next;
+                sljedeci->next = P;
+                prethodni->next=sljedeci;
+                P->next=temp;
+
+                isChanged = 1;
+            }
+
+            prethodni = prethodni->next;
+            P=P->next;
+            sljedeci=sljedeci->next;
+        }
+
+    } while (isChanged);
+
     return 0;
 }
