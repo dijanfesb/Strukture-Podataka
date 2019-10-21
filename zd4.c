@@ -14,7 +14,6 @@ int ucitajIzDatoteke(Clan * HEAD_1, Clan * HEAD_2, char * fileName);
 int umetniElementSortirano(Clan * HEAD, int koeficijent, int eksponent);
 int procitajRed(Clan * HEAD, char * red);
 int umetniElementIza(Clan * HEAD, Clan * element, Clan * novi);
-Clan * traziZadnjiVeciElement(Clan * HEAD, int eksponent);
 Clan * pronadiPrethodniElement(Clan * HEAD, Clan * Pozicija);
 int zbrojiPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_SUM);
 int pomnoziPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_PRODUKT);
@@ -93,7 +92,6 @@ int umetniElementSortirano(Clan * HEAD, int koeficijent, int eksponent)
 
     while(P->next!=NULL && P->next->eksponent>eksponent)
         P=P->next;
-
 
     if (P->next != NULL && P->next->eksponent == eksponent) {
         P->next->koeficijent+=koeficijent;
