@@ -18,6 +18,8 @@ Clan * pronadiPrethodniElement(Clan * HEAD, Clan * Pozicija);
 int zbrojiPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_SUM);
 int pomnoziPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_PRODUKT);
 int ispis(Clan * HEAD);
+int izbrisiElement(Clan * HEAD, Clan * prethodni, Clan * element);
+int ocistiNulaElemente(Clan * HEAD);
 
 
 int main(void)
@@ -94,7 +96,7 @@ int umetniElementSortirano(Clan * HEAD, int koeficijent, int eksponent)
         P=P->next;
 
     if (P->next != NULL && P->next->eksponent == eksponent) {
-        P->next->koeficijent+=koeficijent;
+            P->next->koeficijent+=eksponent;
     }
     else {
         Clan * novi = (Clan *)malloc(sizeof(Clan));
@@ -146,6 +148,8 @@ int zbrojiPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_SUM)
         pHEAD_2 = pHEAD_2->next;
     }
 
+    ocistiNulaElemente(HEAD_SUM);
+
     return 0;
 }
 
@@ -163,5 +167,24 @@ int pomnoziPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_PRODUKT)
          pHEAD_1=pHEAD_1->next;
      }
 
-     return 0;
+    ocistiNulaElemente(HEAD_PRODUKT);
+
+    return 0;
+}
+
+int ocistiNulaElemente(Clan * HEAD)
+{
+    Clan * P = HEAD;
+    Clan * temp;
+    
+    while(P->next != NULL) {
+        if (!P->next->koeficijent) {
+            temp = P->next;
+            P->next = P->next->next;
+            free(temp);
+        }
+        P=P->next;
+    }
+
+    return 0;
 }
