@@ -1,4 +1,4 @@
-# Strukture-Podataka
+# Strukture podataka
 
 - [x] Zadatak 1
 - [x] Zadatak 2
