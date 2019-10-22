@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define STRMAX 1024
 
@@ -33,6 +34,8 @@ int main()
 
     printf("Zelite li unos iz datoteke [D] ili iz standardnog ulaza [S]? ");
     scanf(" %c", &select);
+
+    select = toupper(select);
 
     if (select == 'D') {
         char fileName[STRMAX];
