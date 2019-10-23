@@ -283,12 +283,7 @@ Student * pronadiPrethodniElement(Student * HEAD, Student * element)
 
 Student * pronadiZadnjiElement(Student * HEAD)
 {
-    Student * P = HEAD;
-
-    while(P->next!=NULL)
-        P=P->next;
-
-    return P;
+    return pronadiPrethodniElement(HEAD, NULL);
 }
 
 int sortirajPoPrezimenu(Student * HEAD)
