@@ -13,13 +13,18 @@ typedef struct _stack_element
 int pushStack(element *HEAD, float broj);
 int popStack(element *HEAD);
 int izracunajPostfix(element *HEAD, char *filename);
+int izracunajOperaciju(element * HEAD, char operand);
 
 int main()
 {
     element *HEAD = (element *)malloc(sizeof(element));
     HEAD->next = NULL;
+    char filename[STRMAX];
 
-    izracunajPostfix(HEAD, "postfix.txt");
+    printf("Unesi ime datoteke s postfix izrazom: ");
+    scanf("%s", filename);
+
+    izracunajPostfix(HEAD, filename);
 
     printf("%.3f\n", HEAD->next->broj);
 
@@ -77,38 +82,44 @@ int izracunajPostfix(element *HEAD, char *filename)
         else
         {
             sscanf(pBuffer, " %c%n", &operator, &offset);
-
-            switch (operator)
-            {
-            case ('*'):
-                operand1 = popStack(HEAD);
-                operand2 = popStack(HEAD);
-                pushStack(HEAD, operand1 * operand2);
-                pBuffer += offset;
-                break;
-            case ('/'):
-                operand1 = popStack(HEAD);
-                operand2 = popStack(HEAD);
-                pushStack(HEAD, operand2 / operand1);
-                pBuffer += offset;
-                break;
-            case ('+'):
-                operand1 = popStack(HEAD);
-                operand2 = popStack(HEAD);
-                pushStack(HEAD, operand1 + operand2);
-                pBuffer += offset;
-                break;
-            case ('-'):
-                operand1 = popStack(HEAD);
-                operand2 = popStack(HEAD);
-                pushStack(HEAD, operand2 - operand1);
-                pBuffer += offset;
-                break;
-            default:
-                pBuffer += 1;
-                break;
-            }
+            izracunajOperaciju(HEAD, operator);
+            pBuffer += offset;
         }
+
+        
+
+    }
+
+    return 0;
+}
+
+int izracunajOperaciju(element * HEAD, char operator)
+{
+    int operand1 = 0;
+    int operand2 = 0;
+
+    switch (operator)
+    {
+    case ('*'):
+        operand1 = popStack(HEAD);
+        operand2 = popStack(HEAD);
+        pushStack(HEAD, operand1 * operand2);
+        break;
+    case ('/'):
+        operand1 = popStack(HEAD);
+        operand2 = popStack(HEAD);
+        pushStack(HEAD, operand2 / operand1);
+        break;
+    case ('+'):
+        operand1 = popStack(HEAD);
+        operand2 = popStack(HEAD);
+        pushStack(HEAD, operand1 + operand2);
+        break;
+    case ('-'):
+        operand1 = popStack(HEAD);
+        operand2 = popStack(HEAD);
+        pushStack(HEAD, operand2 - operand1);
+        break;
     }
 
     return 0;
