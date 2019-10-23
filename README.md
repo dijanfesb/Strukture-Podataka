@@ -6,7 +6,7 @@
 - [x] Zadatak 4
 - [x] Zadatak 5
 - [x] Zadatak 6
-- [ ] Zadatak 7
+- [x] Zadatak 7
 - [ ] Zadatak 8
 - [ ] Zadatak 9
 - [ ] Zadatak 10
