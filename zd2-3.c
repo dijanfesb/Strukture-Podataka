@@ -239,7 +239,7 @@ int ucitajIzDatoteke(Student * HEAD, char * filename)
     FILE * fp;
     int brojStudenata = 0;
     int i = 0;
-    Student * P = HEAD;
+    Student * P = pronadiZadnjiElement(HEAD);
     char buffer[STRMAX];
 
     fp = fopen(filename, "r");
