@@ -56,6 +56,7 @@ int menu(Student * HEAD)
     printf("7. Sortiraj listu\n\t");
     printf("8. Spremi listu u datoteku\n\t");
     printf("9. Ucitaj listu iz datoteke\n\t");
+    printf("10. Izbrisi element\n\t");
     printf("0. Zatvori program\n\n");
 
     scanf("%d", &izbor);
@@ -102,6 +103,11 @@ int menu(Student * HEAD)
             printf("Unesi ime datoteke: ");
             scanf("%s", fileName);
             ucitajIzDatoteke(HEAD, fileName);
+            break;
+        case (10):
+            printf("Unesi prezime: ");
+            scanf("%s", prezime);
+            brisiElement(HEAD, pronadiElement(HEAD, prezime));
             break;
         case (0):
             return 1;
