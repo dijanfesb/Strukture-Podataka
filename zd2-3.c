@@ -11,13 +11,13 @@ typedef struct _student {
     struct _student * next;
 } Student;
 
-int unosPocetak(Student * HEAD);
-int unosKraj(Student * HEAD);
+int unosPocetak(Student * HEAD, Student * element);
+int unosKraj(Student * HEAD, Student * element);
 int ispis(Student * HEAD);
 int menu(Student * HEAD);
 Student * pronadiElement(Student * HEAD, char * prezime);
 int brisiElement(Student * HEAD, Student * element);
-int dodajElementIza(Student * element);
+int dodajElementIza(Student * element, Student * noviElement);
 int dodajElementIspred(Student * HEAD, Student * element);
 int spremiUDatoteku(Student * HEAD, char * filename);
 int ucitajIzDatoteke(Student * HEAD, char * filename);
@@ -25,6 +25,7 @@ int sortirajPoPrezimenu(Student * HEAD);
 Student * pronadiZadnjiElement(Student * HEAD);
 int zamijeniPozicije(Student * HEAD, Student * prvi, Student * drugi);
 Student * pronadiPrethodniElement(Student * HEAD, Student * element);
+int unosPodataka(void);
 
 int main(void)
 {
@@ -42,9 +43,9 @@ int main(void)
 int menu(Student * HEAD)
 {
     int izbor = 0;
-    char prezime[STRMAX];
+    char prezime[STRMAX]= {0};
     Student * element = NULL;
-    char fileName[STRMAX];
+    char fileName[STRMAX]= {0};
 
     printf("Odaberi zeljenu opciju:\n\t");
     printf("1. Unesi element na pocetak liste\n\t");
@@ -59,19 +60,19 @@ int menu(Student * HEAD)
     printf("10. Izbrisi element\n\t");
     printf("0. Zatvori program\n\n");
 
-    scanf("%d", &izbor);
+    scanf(" %d", &izbor);
 
     switch(izbor)
     {
         case (1):
-            unosPocetak(HEAD);
+            unosPocetak(HEAD, unosPodataka());
             break;
         case (2):
-            unosKraj(HEAD);
+            unosKraj(HEAD, unosPodataka());
             break;
         case (3):
             printf("Unesi prezime: ");
-            scanf("%s", prezime);
+            scanf(" %s", prezime);
             element = pronadiElement(HEAD, prezime);
             printf("%s %s %d", element->ime, element->prezime, element->godinaRodenja);
             break;
@@ -80,13 +81,13 @@ int menu(Student * HEAD)
             break;
         case (5):
             printf("Unesi prezime: ");
-            scanf("%s", prezime);
+            scanf(" %s", prezime);
             element = pronadiElement(HEAD, prezime);
-            dodajElementIza(element);
+            dodajElementIza(element, unosPodataka());
             break;
         case (6):
             printf("Unesi prezime: ");
-            scanf("%s", prezime);
+            scanf(" %s", prezime);
             element = pronadiElement(HEAD, prezime);
             dodajElementIspred(HEAD, element);
             break;
@@ -96,17 +97,17 @@ int menu(Student * HEAD)
             break;
         case (8):
             printf("Unesi ime datoteke: ");
-            scanf("%s", fileName);
+            scanf(" %s", fileName);
             spremiUDatoteku(HEAD, fileName);
             break;
         case (9):
             printf("Unesi ime datoteke: ");
-            scanf("%s", fileName);
+            scanf(" %s", fileName);
             ucitajIzDatoteke(HEAD, fileName);
             break;
         case (10):
             printf("Unesi prezime: ");
-            scanf("%s", prezime);
+            scanf(" %s", prezime);
             brisiElement(HEAD, pronadiElement(HEAD, prezime));
             break;
         case (0):
@@ -115,15 +116,11 @@ int menu(Student * HEAD)
     return 0;
 }
 
-int unosPocetak(Student * HEAD)
+int unosPocetak(Student * HEAD, Student * element)
 {
-    Student * element = (Student *)malloc(sizeof(Student));
 
     element->next = HEAD->next;
     HEAD->next = element;
-
-    printf("Unesi ime, prezime i godinu rodenja studenta [IME PREZIME GODINA]: ");
-    scanf("%s %s %d", element->ime, element->prezime, &(element->godinaRodenja));
 
     return 0;
 }
@@ -140,16 +137,12 @@ int ispis(Student * HEAD)
     return 0;
 }
 
-int unosKraj(Student * HEAD)
+int unosKraj(Student * HEAD, Student * element)
 {
-    Student * element = (Student *)malloc(sizeof(Student));
     Student * P = pronadiZadnjiElement(HEAD);
     
     element->next = NULL;
     P->next=element;
-
-    printf("Unesi ime, prezime i godinu rodenja studenta [IME PREZIME GODINA]: ");
-    scanf("%s %s %d", element->ime, element->prezime, &(element->godinaRodenja));
 
     return 0; 
 }
@@ -184,15 +177,12 @@ int brisiElement(Student * HEAD, Student * element)
     return 0;
 }
 
-int dodajElementIza(Student * element)
+int dodajElementIza(Student * element, Student * noviElement)
 {
-    Student * noviElement = (Student *)malloc(sizeof(Student));
-
     noviElement->next = element->next;
     element->next = noviElement;
 
-    printf("Unesi ime, prezime i godinu rodenja studenta [IME PREZIME GODINA]: ");
-    scanf("%s %s %d", noviElement->ime, noviElement->prezime, &(noviElement->godinaRodenja));
+    noviElement = unosPodataka();
 
     return 0;
 }
@@ -210,7 +200,7 @@ int dodajElementIspred(Student * HEAD, Student * element)
         return -1;
     }
 
-    dodajElementIza(P);
+    dodajElementIza(P, unosPodataka());
 
     return 0;
 }
@@ -240,7 +230,7 @@ int ucitajIzDatoteke(Student * HEAD, char * filename)
     int brojStudenata = 0;
     int i = 0;
     Student * P = pronadiZadnjiElement(HEAD);
-    char buffer[STRMAX];
+    char buffer[STRMAX] = {0};
 
     fp = fopen(filename, "r");
 
@@ -310,4 +300,14 @@ int sortirajPoPrezimenu(Student * HEAD)
     }
     
     return 0;
+}
+
+Student * unosPodataka(void)
+{
+    Student * P = (Student *)malloc(sizeof(Student));
+
+    printf("Unesite ime prezime i godinu rodenja [IME PREZIME GODINA]: ");
+    scanf("%s %s %d", P->ime, P->prezime, P->godinaRodenja);
+
+    return P;
 }
