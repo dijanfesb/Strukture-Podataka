@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,12 +15,10 @@ typedef struct polinom {
 int ucitajIzDatoteke(Clan * HEAD_1, Clan * HEAD_2, char * fileName);
 int umetniElementSortirano(Clan * HEAD, int koeficijent, int eksponent);
 int procitajRed(Clan * HEAD, char * red);
-int umetniElementIza(Clan * HEAD, Clan * element, Clan * novi);
 Clan * pronadiPrethodniElement(Clan * HEAD, Clan * Pozicija);
 int zbrojiPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_SUM);
 int pomnoziPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_PRODUKT);
 int ispis(Clan * HEAD);
-int izbrisiElement(Clan * HEAD, Clan * prethodni, Clan * element);
 int ocistiNulaElemente(Clan * HEAD);
 
 
@@ -30,6 +30,9 @@ int main(void)
     Clan * HEAD_2 = (Clan *)malloc(sizeof(Clan));
     Clan * HEAD_S = (Clan *)malloc(sizeof(Clan));
     Clan * HEAD_P = (Clan *)malloc(sizeof(Clan));
+
+    if (!HEAD_1 || !HEAD_2 || !HEAD_S || !HEAD_P)
+        return -1;
 
     HEAD_1->next=NULL;
     HEAD_2->next=NULL;
@@ -100,6 +103,10 @@ int umetniElementSortirano(Clan * HEAD, int koeficijent, int eksponent)
     }
     else {
         Clan * novi = (Clan *)malloc(sizeof(Clan));
+
+        if (!novi)
+            return -1;
+
         novi->next=P->next;
         P->next=novi;
 
@@ -131,6 +138,8 @@ int ispis(Clan * HEAD)
             printf(" + ");
         P=P->next;
     }
+
+	return 0;
 }
 
 int zbrojiPolinome(Clan * HEAD_1, Clan * HEAD_2, Clan * HEAD_SUM)

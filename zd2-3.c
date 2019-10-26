@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,13 +27,16 @@ int sortirajPoPrezimenu(Student * HEAD);
 Student * pronadiZadnjiElement(Student * HEAD);
 int zamijeniPozicije(Student * HEAD, Student * prvi, Student * drugi);
 Student * pronadiPrethodniElement(Student * HEAD, Student * element);
-int unosPodataka(void);
+Student * unosPodataka(void);
 
 int main(void)
 {
-    Student * HEAD = (Student *)malloc(sizeof(Student));
-    HEAD->next = NULL;
+    Student* HEAD;
     int status = 0;
+    HEAD = (Student*)malloc(sizeof(Student));
+    if (!HEAD)
+        return -1;
+    HEAD->next = NULL;
 
     do {
         status = menu(HEAD);
@@ -170,8 +175,8 @@ int brisiElement(Student * HEAD, Student * element)
         return -1;
     else
     {
-            P->next=P->next->next;
-            free(element);
+        P->next=P->next->next;
+        free(element);
     }
 
     return 0;
@@ -181,8 +186,6 @@ int dodajElementIza(Student * element, Student * noviElement)
 {
     noviElement->next = element->next;
     element->next = noviElement;
-
-    noviElement = unosPodataka();
 
     return 0;
 }
@@ -306,8 +309,11 @@ Student * unosPodataka(void)
 {
     Student * P = (Student *)malloc(sizeof(Student));
 
+    if (!P)
+        return NULL;
+
     printf("Unesite ime prezime i godinu rodenja [IME PREZIME GODINA]: ");
-    scanf("%s %s %d", P->ime, P->prezime, P->godinaRodenja);
+    scanf("%s %s %d", P->ime, P->prezime, &(P->godinaRodenja));
 
     return P;
 }

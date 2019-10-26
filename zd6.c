@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -18,6 +20,10 @@ int main()
 {
     element * HEAD_QUEUE = (element *)malloc(sizeof(element));
     element * HEAD_STACK = (element *)malloc(sizeof(element));
+
+    if (!HEAD_QUEUE || !HEAD_STACK)
+        return -1;
+
     HEAD_QUEUE->next = NULL;
     HEAD_STACK->next = NULL;
 
@@ -35,6 +41,9 @@ int main()
 int pushStack(element * HEAD, int broj)
 {
     element * novi = (element *)malloc(sizeof(element));
+
+    if (!novi)
+        return -1;
 
     novi->next=HEAD->next;
     HEAD->next = novi;
@@ -56,6 +65,10 @@ int popStack(element * HEAD)
 int pushQueue(element * HEAD, int broj)
 {
     element * novi = (element *)malloc(sizeof(element));
+
+    if (!novi)
+        return -1;
+
     novi->broj = broj;
     novi->next = HEAD->next;
     HEAD->next=novi;

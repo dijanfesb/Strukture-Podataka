@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -26,6 +28,10 @@ int main()
     element * HEAD_L2 = (element *)malloc(sizeof(element));
     element * HEAD_UNIJA = (element *)malloc(sizeof(element));
     element * HEAD_PRESJEK = (element *)malloc(sizeof(element));
+
+    if (!HEAD_L1 || !HEAD_L2 || !HEAD_PRESJEK || !HEAD_UNIJA)
+        return -1;
+
     HEAD_L1->next=NULL;
     HEAD_L2->next=NULL;
     HEAD_UNIJA->next=NULL;
@@ -92,6 +98,9 @@ int unesiSortirano(element * HEAD, int broj)
     element * P = HEAD;
     element * novi = (element *)malloc(sizeof(element));
     
+    if (!novi)
+        return -1;
+
     while(P->next != NULL && P->next->broj < broj)
         P=P->next;
 
