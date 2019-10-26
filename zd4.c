@@ -96,7 +96,7 @@ int umetniElementSortirano(Clan * HEAD, int koeficijent, int eksponent)
         P=P->next;
 
     if (P->next != NULL && P->next->eksponent == eksponent) {
-            P->next->koeficijent+=eksponent;
+            P->next->koeficijent+=koeficijent;
     }
     else {
         Clan * novi = (Clan *)malloc(sizeof(Clan));
