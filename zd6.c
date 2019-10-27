@@ -143,4 +143,6 @@ int menu(element * HEAD_STACK, element * HEAD_QUEUE)
         case (0):
             return 0;
     }
+
+	return 1;
 }
