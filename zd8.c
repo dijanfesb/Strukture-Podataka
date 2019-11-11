@@ -21,7 +21,6 @@ Node * createNew(char * name);
 int insertSorted(Node * parent, Node * newNode);
 Node * findLastSmallerByName(Node * refElement, Node * searchElement);
 int listDirectory(Node * parent, history * historyHEAD);
-Node * findAboveDirectory(history * historyHEAD);
 int shell(Node * treeROOT, history * historyHEAD);
 int pushHistoryStack(history * HEAD, Node * upperDirectory);
 Node * popHistoryStack(history * HEAD);
@@ -76,7 +75,7 @@ int insertSorted(Node * parent, Node * newNode)
         Node * lastSmallerElement = findLastSmallerByName(parent->child, newNode);
 
         if (direcoryExistsInCurrent(parent, newNode->name))
-            return -2; // Element s istim imenom već postoji.
+            return -2; /* Element s istim imenom već postoji. */
         else {
             lastSmallerElement->next = newNode;
         }
@@ -105,7 +104,7 @@ int listDirectory(Node * parent, history * historyHEAD)
         if (historyHEAD->next)
             printf("|-- ..\n ");
             
-        return -3; // Direktorij je prazan.
+        return -3; /* Direktorij je prazan. */
     }
 
     do {
@@ -119,11 +118,6 @@ int listDirectory(Node * parent, history * historyHEAD)
     printf("\n");
 
     return 0;
-}
-
-Node * findAboveDirectory(history * historyHEAD)
-{
-    return popHistoryStack(historyHEAD);
 }
 
 int pushHistoryStack(history * HEAD, Node * upperDirectory)
@@ -143,7 +137,7 @@ int pushHistoryStack(history * HEAD, Node * upperDirectory)
 Node * popHistoryStack(history * HEAD)
 {
     if (!HEAD->next)
-        return NULL; //Prazan stack
+        return NULL; /* Prazan stack */
 
     history * temp = HEAD->next;
     Node * upperDirectory = HEAD->next->upperDirectory;
@@ -236,8 +230,8 @@ int md(Node * currentDirectory, char * argument)
         printf("Nije uneseno ime direktorija.\n");
     else {
         error = insertSorted(currentDirectory, createNew(argument));
-    if (error == -2)
-        printf("Direktorij već postoji.\n");
+        if (error == -2)
+            printf("Direktorij već postoji.\n");
     }
 
     return error;
@@ -248,20 +242,24 @@ Node * cd(Node * currentDirectory, Node * treeROOT, char * argument, history * h
     int error = 0;
 
     if (!argumentIsValid(argument))
-	printf("Nije uneseno ime direktorija.\n");
-    else if (direcoryExistsInCurrent(currentDirectory, argument)) {
+	    printf("Nije uneseno ime direktorija.\n");
+    else if (!strcmp(argument, "..")) {
+        currentDirectory = popHistoryStack(historyHEAD);
+        if (!currentDirectory) {
+            printf("Nalazite se u root direktoriju.\n");
+            currentDirectory = treeROOT;
+        }
+    }
+    else if (!direcoryExistsInCurrent(currentDirectory, argument)) {
+        printf("Direktorij ne postoji!\n");
+    }
+    else {
         error = pushHistoryStack(historyHEAD, currentDirectory);
         if (error == -1)
             printf("History stack: greška s alokacijom memorije.\n");
         else
             currentDirectory = getDirecoryFromName(currentDirectory, argument);
     }
-    else if (!strcmp(argument, ".."))
-        currentDirectory = popHistoryStack(historyHEAD);
-        if (!currentDirectory) {
-            printf("Nalazite se u root direktoriju.\n");
-            currentDirectory = treeROOT;
-        }
 
     return currentDirectory;
 }
