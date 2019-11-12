@@ -1,33 +1,51 @@
+//TODO: Zagrade
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+#include <string.h>
 
 #define STRMAX 1024
+#define ELEMENTMAX 21
 
 typedef struct _node
 {
-    char element;
+    char element[ELEMENTMAX];
     struct _node *left;
     struct _node *right;
 } Node;
 
 typedef struct _stack
 {
-    char element;
+    char element[ELEMENTMAX];
     struct _stack *next;
 } Stack;
 
 int postfixToStack(Stack *stackRoot, char *buffer);
 int readFromFile(Stack *stackRoot, char *filename);
 int isOperand(char element);
-int pushStack(Stack *HEAD, char znak);
+int pushStack(Stack *HEAD, char * znak);
+char * popStack(Stack * HEAD);
+Node * stackToTree(Stack * HEAD, Node * ROOT);
+Node * allocateNewNode(void);
+int inorderPrint(Node * ROOT);
 
 int main(void)
 {
-    Stack *ROOT = malloc(sizeof(Stack));
-    ROOT->element = 0;
-    ROOT->next = NULL;
+    char filename[STRMAX];
+    Stack *HEAD = malloc(sizeof(Stack));
+    Node *ROOT = allocateNewNode();
+    HEAD->next = NULL;
+    memset(HEAD->element, 0, ELEMENTMAX);
 
-    readFromFile(ROOT, "postfix.txt");
+    printf("Unesite ime datoteke: ");
+    scanf(" %s", filename);
+
+    readFromFile(HEAD, filename);
+
+    ROOT = stackToTree(HEAD, ROOT);
+
+    inorderPrint(ROOT);
 
     return 0;
 }
@@ -53,14 +71,14 @@ int readFromFile(Stack *stackRoot, char *filename)
 int postfixToStack(Stack *stackRoot, char *buffer)
 {
     int offset = 0;
-    char znak[11] = {0};
+    char znak[ELEMENTMAX] = {0};
 
     while (sscanf(buffer, " %s %n", znak, &offset) == 1)
     {
         if (isOperand(znak[0]))
-            pushStack(stackRoot, znak[0]);
+            pushStack(stackRoot, znak);
         else
-            pushStack(stackRoot, atoi(znak));
+            pushStack(stackRoot, znak);
         buffer += offset;
         offset = 0;
     }
@@ -81,7 +99,7 @@ int isOperand(char element)
     return 0;
 }
 
-int pushStack(Stack *HEAD, char znak)
+int pushStack(Stack *HEAD, char * znak)
 {
     Stack *novi = (Stack *)malloc(sizeof(Stack));
 
@@ -90,7 +108,69 @@ int pushStack(Stack *HEAD, char znak)
 
     novi->next = HEAD->next;
     HEAD->next = novi;
-    novi->element = znak;
+    strcpy(novi->element, znak);
 
     return 0;
+}
+
+char * popStack(Stack * HEAD)
+{
+    char * tempStr = malloc(sizeof(char));
+
+    if (!HEAD->next)
+        return 0;
+
+    Stack * temp = HEAD->next;
+    strcpy(tempStr, temp->element);
+    HEAD->next=HEAD->next->next;
+    free(temp);
+
+    return tempStr;
+}
+
+Node * stackToTree(Stack * HEAD, Node * ROOT)
+{
+    char * element = strcpy(malloc(ELEMENTMAX*sizeof(char)), popStack(HEAD));
+
+    ROOT = allocateNewNode();
+
+    if (!strlen(element))
+        return NULL;
+
+    strcpy(ROOT->element, element);
+    
+    if (isOperand(ROOT->element[0])) {
+        ROOT->right = stackToTree(HEAD, ROOT->right);
+        ROOT->left = stackToTree(HEAD, ROOT->left);
+    }
+
+    return ROOT;    
+}
+
+Node * allocateNewNode(void)
+{
+    Node * newNode = malloc(sizeof(Node));
+    newNode->left=NULL;
+    newNode->right=NULL;
+
+    return newNode;
+}
+
+int inorderPrint(Node * ROOT)
+{
+    if (!ROOT)
+        return 0;
+
+
+    inorderPrint(ROOT->left);
+
+    if (!isOperand(ROOT->element[0])) {
+        printf("%d", atoi(ROOT->element));
+    }
+    else
+    {
+        printf("%c", ROOT->element[0]);
+    }
+
+    inorderPrint(ROOT->right);
 }
