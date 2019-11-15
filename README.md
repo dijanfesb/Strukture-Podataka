@@ -8,6 +8,6 @@
 - [x] Zadatak 6
 - [x] Zadatak 7
 - [x] Zadatak 8
-- [ ] Zadatak 9
-- [ ] Zadatak 10
+- [x] Zadatak 9
+- [x] Zadatak 10
 - [ ] Zadatak 11
