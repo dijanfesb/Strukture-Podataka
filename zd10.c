@@ -75,9 +75,6 @@ int postfixToStack(Stack *stackRoot, char *buffer)
 
     while (sscanf(buffer, " %s %n", znak, &offset) == 1)
     {
-        if (isOperand(znak[0]))
-            pushStack(stackRoot, znak);
-        else
             pushStack(stackRoot, znak);
         buffer += offset;
         offset = 0;
@@ -118,7 +115,7 @@ char * popStack(Stack * HEAD)
     char * tempStr = malloc(sizeof(char));
 
     if (!HEAD->next)
-        return 0;
+        return NULL;
 
     Stack * temp = HEAD->next;
     strcpy(tempStr, temp->element);
@@ -130,11 +127,11 @@ char * popStack(Stack * HEAD)
 
 Node * stackToTree(Stack * HEAD, Node * ROOT)
 {
-    char * element = strcpy(malloc(ELEMENTMAX*sizeof(char)), popStack(HEAD));
+    char * element = popStack(HEAD);
 
     ROOT = allocateNewNode();
 
-    if (!strlen(element))
+    if (!element)
         return NULL;
 
     strcpy(ROOT->element, element);
@@ -161,16 +158,9 @@ int inorderPrint(Node * ROOT)
     if (!ROOT)
         return 0;
 
-
     inorderPrint(ROOT->left);
 
-    if (!isOperand(ROOT->element[0])) {
-        printf("%d", atoi(ROOT->element));
-    }
-    else
-    {
-        printf("%c", ROOT->element[0]);
-    }
+    printf("%s", ROOT->element);
 
     inorderPrint(ROOT->right);
 }
