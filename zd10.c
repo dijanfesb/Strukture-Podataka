@@ -1,5 +1,3 @@
-//TODO: Zagrade
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -158,9 +156,15 @@ int inorderPrint(Node * ROOT)
     if (!ROOT)
         return 0;
 
+    printf("(");
+
     inorderPrint(ROOT->left);
 
     printf("%s", ROOT->element);
 
     inorderPrint(ROOT->right);
+
+    printf(")");
+
+    return 0;
 }
