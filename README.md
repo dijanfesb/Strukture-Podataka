@@ -10,4 +10,4 @@
 - [x] Zadatak 8
 - [x] Zadatak 9
 - [x] Zadatak 10
-- [ ] Zadatak 11
+- [x] Zadatak 11
